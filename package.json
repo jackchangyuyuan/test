@@ -1,0 +1,16 @@
+{
+  "name": "opencord",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackchangyuyuan/opencord.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jackchangyuyuan/opencord/issues"
+  },
+  "homepage": "https://github.com/jackchangyuyuan/opencord#readme"
+}
