@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "workspaces": ["apps/*"],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jackchangyuyuan/opencord.git"
@@ -12,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/jackchangyuyuan/opencord/issues"
   },
-  "homepage": "https://github.com/jackchangyuyuan/opencord#readme"
+  "homepage": "https://github.com/jackchangyuyuan/opencord#readme",
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "~6.0.2"
+  }
 }
