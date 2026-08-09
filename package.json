@@ -6,6 +6,7 @@
     "apps/*"
   ],
   "scripts": {
+    "dev": "concurrently -n api,web \"npm:dev -w @opencord/api\" \"npm:dev -w @opencord/web\"",
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
@@ -31,6 +32,7 @@
     "@eslint/js": "^10.0.1",
     "@tanstack/eslint-plugin-query": "^5.101.4",
     "@types/node": "^26.2.0",
+    "concurrently": "^10.0.4",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-dom": "^5.18.2",
