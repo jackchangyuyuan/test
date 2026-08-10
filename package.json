@@ -13,7 +13,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
   },
   "repository": {
     "type": "git",
