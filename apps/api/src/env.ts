@@ -9,6 +9,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 config({ path: path.resolve(dirname, "../../../.env") });
 
 const envSchema = z.object({
+  DATABASE_URL: z.url(),
   PORT: z.coerce.number().int().positive().default(3000),
 });
 
