@@ -4,6 +4,7 @@ import vitest from "@vitest/eslint-plugin";
 import { defineConfig, globalIgnores } from "eslint/config";
 import prettier from "eslint-config-prettier/flat";
 import jestDom from "eslint-plugin-jest-dom";
+import playwright from "eslint-plugin-playwright";
 import reactDom from "eslint-plugin-react-dom";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -61,6 +62,10 @@ export default defineConfig([
       testingLibrary.configs["flat/react"],
       jestDom.configs["flat/recommended"],
     ],
+  },
+  {
+    files: ["e2e/**/*.spec.ts"],
+    extends: [playwright.configs["flat/recommended"]],
   },
   prettier,
 ]);
