@@ -43,6 +43,12 @@ export default defineConfig([
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
+    files: ["apps/api/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
+    },
+  },
+  {
     files: ["apps/web/**/*.{ts,tsx}"],
     extends: [
       reactHooks.configs.flat.recommended,
