@@ -3,9 +3,15 @@ import request from "supertest";
 
 import { app } from "./app.ts";
 import { db } from "./db/client.ts";
-import { user } from "./db/schema.ts";
+import { server, user } from "./db/schema/index.ts";
 
 const origin = { Origin: "http://localhost:3000" };
+
+export interface ServerResponse {
+  id: string;
+  name: string;
+  ownerId: string;
+}
 
 export async function signUp(email: string, password: string) {
   return request(app)
@@ -23,6 +29,7 @@ export async function signIn(email: string, password: string) {
 
 export function createAuthTestHelpers() {
   const createdEmails: string[] = [];
+  const createdServerIds: string[] = [];
 
   function uniqueEmail(label: string) {
     const email = `${label}-${crypto.randomUUID()}@test.opencord.local`;
@@ -42,11 +49,26 @@ export function createAuthTestHelpers() {
     return { email, cookie };
   }
 
+  async function createServer(cookie: string, name: string) {
+    const res = await request(app)
+      .post("/api/servers")
+      .set("Cookie", cookie)
+      .send({ name });
+
+    const created = (res.body as { server: ServerResponse }).server;
+    createdServerIds.push(created.id);
+    return created;
+  }
+
   async function cleanup() {
+    if (createdServerIds.length > 0) {
+      await db.delete(server).where(inArray(server.id, createdServerIds));
+    }
+
     if (createdEmails.length > 0) {
       await db.delete(user).where(inArray(user.email, createdEmails));
     }
   }
 
-  return { uniqueEmail, signUpAndGetCookie, cleanup };
+  return { uniqueEmail, signUpAndGetCookie, createServer, cleanup };
 }

@@ -3,23 +3,23 @@ import express from "express";
 
 import { auth } from "./auth.ts";
 import { errorHandler } from "./error-handler.ts";
-import { requireAuth } from "./require-auth.ts";
+import { getSession, requireAuth } from "./require-auth.ts";
+import { serversRouter } from "./routes/servers.ts";
 
 export const app = express();
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
+
+app.use(express.json());
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
 app.get("/api/me", requireAuth, (req, res) => {
-  if (!req.session) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
-
-  res.json({ user: req.session.user });
+  res.json({ user: getSession(req).user });
 });
+
+app.use("/api/servers", serversRouter);
 
 app.use(errorHandler);

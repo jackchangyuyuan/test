@@ -30,3 +30,11 @@ export async function requireAuth(
   req.session = session;
   next();
 }
+
+export function getSession(req: Request): Session {
+  if (!req.session) {
+    throw new Error("getSession called without requireAuth middleware");
+  }
+
+  return req.session;
+}
