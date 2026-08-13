@@ -13,6 +13,12 @@ export interface ServerResponse {
   ownerId: string;
 }
 
+export interface ChannelResponse {
+  id: string;
+  serverId: string;
+  name: string;
+}
+
 export async function signUp(email: string, password: string) {
   return request(app)
     .post("/api/auth/sign-up/email")
@@ -60,6 +66,15 @@ export function createAuthTestHelpers() {
     return created;
   }
 
+  async function createChannel(cookie: string, serverId: string, name: string) {
+    const res = await request(app)
+      .post(`/api/servers/${serverId}/channels`)
+      .set("Cookie", cookie)
+      .send({ name });
+
+    return (res.body as { channel: ChannelResponse }).channel;
+  }
+
   async function cleanup() {
     if (createdServerIds.length > 0) {
       await db.delete(server).where(inArray(server.id, createdServerIds));
@@ -70,5 +85,11 @@ export function createAuthTestHelpers() {
     }
   }
 
-  return { uniqueEmail, signUpAndGetCookie, createServer, cleanup };
+  return {
+    uniqueEmail,
+    signUpAndGetCookie,
+    createServer,
+    createChannel,
+    cleanup,
+  };
 }

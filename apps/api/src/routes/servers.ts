@@ -5,6 +5,7 @@ import { z } from "zod";
 import { db } from "../db/client.ts";
 import { server, serverMember } from "../db/schema/index.ts";
 import { getSession, requireAuth } from "../require-auth.ts";
+import { channelsRouter } from "./channels.ts";
 
 export const serversRouter = Router();
 
@@ -13,6 +14,8 @@ const createServerSchema = z.object({
 });
 
 serversRouter.use(requireAuth);
+
+serversRouter.use("/:serverId/channels", channelsRouter);
 
 serversRouter.post("/", async (req, res) => {
   const parsed = createServerSchema.safeParse(req.body);
