@@ -11,6 +11,7 @@ export interface ServerResponse {
   id: string;
   name: string;
   ownerId: string;
+  inviteCode: string;
 }
 
 export interface ChannelResponse {

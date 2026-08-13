@@ -11,6 +11,10 @@ export const server = pgTable("server", {
   ownerId: text("owner_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  inviteCode: text("invite_code")
+    .notNull()
+    .unique()
+    .$defaultFn(() => crypto.randomUUID().slice(0, 8)),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
