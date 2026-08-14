@@ -6,6 +6,7 @@ import { db } from "../db/client.ts";
 import { getMembership } from "../db/membership.ts";
 import { channel } from "../db/schema/index.ts";
 import { getSession } from "../require-auth.ts";
+import { messagesRouter } from "./messages.ts";
 
 export const channelsRouter = Router({ mergeParams: true });
 
@@ -21,6 +22,8 @@ interface ServerParams {
 interface ChannelParams extends ServerParams {
   channelId: string;
 }
+
+channelsRouter.use("/:channelId/messages", messagesRouter);
 
 channelsRouter.post<ServerParams>("/", async (req, res) => {
   const { serverId } = req.params;

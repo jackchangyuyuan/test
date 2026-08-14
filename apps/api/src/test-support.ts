@@ -20,6 +20,14 @@ export interface ChannelResponse {
   name: string;
 }
 
+export interface MessageResponse {
+  id: string;
+  channelId: string;
+  authorId: string;
+  content: string;
+  createdAt: string;
+}
+
 export async function signUp(email: string, password: string) {
   return request(app)
     .post("/api/auth/sign-up/email")
@@ -76,6 +84,20 @@ export function createAuthTestHelpers() {
     return (res.body as { channel: ChannelResponse }).channel;
   }
 
+  async function createMessage(
+    cookie: string,
+    serverId: string,
+    channelId: string,
+    content: string,
+  ) {
+    const res = await request(app)
+      .post(`/api/servers/${serverId}/channels/${channelId}/messages`)
+      .set("Cookie", cookie)
+      .send({ content });
+
+    return (res.body as { message: MessageResponse }).message;
+  }
+
   async function cleanup() {
     if (createdServerIds.length > 0) {
       await db.delete(server).where(inArray(server.id, createdServerIds));
@@ -91,6 +113,7 @@ export function createAuthTestHelpers() {
     signUpAndGetCookie,
     createServer,
     createChannel,
+    createMessage,
     cleanup,
   };
 }
