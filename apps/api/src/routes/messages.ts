@@ -6,6 +6,7 @@ import { z } from "zod";
 import { db } from "../db/client.ts";
 import { findChannelInServer, getMembership } from "../db/membership.ts";
 import { message } from "../db/schema/index.ts";
+import { broadcastNewMessage } from "../realtime.ts";
 import { getSession } from "../require-auth.ts";
 
 export const messagesRouter = Router({ mergeParams: true });
@@ -57,6 +58,8 @@ messagesRouter.post<MessageParams>("/", async (req, res) => {
   if (!created) {
     throw new Error("Insert into message did not return a row");
   }
+
+  broadcastNewMessage(channelId, created);
 
   res.status(201).json({ message: created });
 });
