@@ -9,6 +9,10 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, { provider: "pg", schema }),
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
+  // The Vite dev server proxies /api same-origin, but it doesn't rewrite the
+  // browser's Origin header, so Better Auth still sees the Vite dev origin
+  // and needs to trust it explicitly.
+  trustedOrigins: ["http://localhost:5173"],
   emailAndPassword: {
     enabled: true,
   },
